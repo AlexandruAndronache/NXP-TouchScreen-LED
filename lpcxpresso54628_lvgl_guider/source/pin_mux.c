@@ -1318,6 +1318,23 @@ void BOARD_InitPins(void)
     /* PORT3 PIN28 (coords: M11) is configured as SCT0_OUT2 */
     IOCON_PinMuxSet(IOCON, 3U, 10U, port3_pin10_config);
 
+    const uint32_t port3_pin14_config = (/* Pin is configured as SCT0_OUT4 */
+                                         IOCON_PIO_FUNC1 |
+                                         /* No addition pin function */
+                                         IOCON_PIO_MODE_INACT |
+                                         /* Input function is not inverted */
+                                         IOCON_PIO_INV_DI |
+                                         /* Enables digital function */
+                                         IOCON_PIO_DIGITAL_EN |
+                                         /* Input filter disabled */
+                                         IOCON_PIO_INPFILT_OFF |
+                                         /* Standard mode, output slew rate control is enabled */
+                                         IOCON_PIO_SLEW_STANDARD |
+                                         /* Open drain is disabled */
+                                         IOCON_PIO_OPENDRAIN_DI);
+    /* PORT3 PIN28 (coords: M11) is configured as SCT0_OUT2 */
+    IOCON_PinMuxSet(IOCON, 3U, 14U, port3_pin14_config);
+
     IOCON->PIO[4][0] = ((IOCON->PIO[4][0] &
                          /* Mask bits to zero which are setting */
                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))

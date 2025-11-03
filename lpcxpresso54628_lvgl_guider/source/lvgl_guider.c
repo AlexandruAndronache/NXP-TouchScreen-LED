@@ -32,6 +32,7 @@ BaseType_t stat;
 BaseType_t stat_pwm;
 sctimer_config_t sctimerInfo;
 sctimer_pwm_signal_param_t pwmParam;
+sctimer_pwm_signal_param_t pwmParam1;
 uint32_t event;
 uint32_t sctimerClock;
 
@@ -81,6 +82,7 @@ static void PwmTask(void *param)
     for (;;)
     {
     	SCTIMER_UpdatePwmDutycycle(SCT0, kSCTIMER_Out_3, (uint8_t)pwm_value, event);
+    	SCTIMER_UpdatePwmDutycycle(SCT0, kSCTIMER_Out_4, (uint8_t)pwm_value, event);
         vTaskDelay(50);
     }
 }
@@ -116,8 +118,20 @@ int main(void)
     pwmParam.dutyCyclePercent = 50;
     uint32_t PWM_signal_frequency_Hz = 5000U;
 
+    // P3_14 - J13 - 7
+    pwmParam1.output           = kSCTIMER_Out_4;
+    pwmParam1.level            = kSCTIMER_HighTrue;
+    pwmParam1.dutyCyclePercent = 50;
+
     // Setup PWM and guard for fail
     if (SCTIMER_SetupPwm(SCT0, &pwmParam, kSCTIMER_EdgeAlignedPwm, PWM_signal_frequency_Hz, sctimerClock, &event) == kStatus_Fail)
+    {
+    	PRINTF("\r\nSCTIMER_SetupPwm FAIL");
+        return -1;
+    }
+
+    // Setup PWM and guard for fail
+    if (SCTIMER_SetupPwm(SCT0, &pwmParam1, kSCTIMER_EdgeAlignedPwm, PWM_signal_frequency_Hz, sctimerClock, &event) == kStatus_Fail)
     {
     	PRINTF("\r\nSCTIMER_SetupPwm FAIL");
         return -1;
