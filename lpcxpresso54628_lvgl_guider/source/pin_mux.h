@@ -40,7 +40,9 @@ void BOARD_InitBootPins(void);
 #define IOCON_PIO_SLEW_FAST 0x0400u     /*!<@brief Fast mode, slew rate control is disabled */
 #define IOCON_PIO_SLEW_STANDARD 0x00u   /*!<@brief Standard mode, output slew rate control is enabled */
 #define PIO310_DIGIMODE_DIGITAL 0x01u   /*!<@brief Select Analog/Digital mode.: Digital mode. */
-#define PIO310_FUNC_ALT1 0x01u          /*!<@brief Selects pin function.: Alternative connection 1. */
+#define PIO310_FUNC_ALT0 0x00u          /*!<@brief Selects pin function.: Alternative connection 0. */
+#define PIO314_DIGIMODE_DIGITAL 0x01u   /*!<@brief Select Analog/Digital mode.: Digital mode. */
+#define PIO314_FUNC_ALT0 0x00u          /*!<@brief Selects pin function.: Alternative connection 0. */
 #define PIO40_DIGIMODE_DIGITAL 0x01u    /*!<@brief Select Analog/Digital mode.: Digital mode. */
 #define PIO40_FUNC_ALT0 0x00u           /*!<@brief Selects pin function.: Alternative connection 0. */
 
@@ -456,6 +458,17 @@ void BOARD_InitBootPins(void);
 #define BOARD_INITPINS_FC2_SCLX_PIN 24U                   /*!<@brief PORT pin number */
 #define BOARD_INITPINS_FC2_SCLX_PIN_MASK (1U << 24U)      /*!<@brief PORT pin mask */
                                                           /* @} */
+
+/*! @name PIO3_14 (coord E3), J13[5]/LED1/P3_14-CT3MAT1-USR_LED1
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINS_LED1_GPIO GPIO                 /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITPINS_LED1_GPIO_PIN_MASK (1U << 14U) /*!<@brief GPIO pin mask */
+#define BOARD_INITPINS_LED1_PORT 3U                   /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITPINS_LED1_PIN 14U                   /*!<@brief PORT pin number */
+#define BOARD_INITPINS_LED1_PIN_MASK (1U << 14U)      /*!<@brief PORT pin mask */
+                                                      /* @} */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
