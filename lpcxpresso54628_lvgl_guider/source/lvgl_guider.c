@@ -92,15 +92,14 @@ static void PwmTask(void *param)
 uint8_t DHT11_ReadByte(void)
 {
     uint8_t value = 0;
-
+    uint32_t freq = CLOCK_GetFreq(sctimerClock);
     for (int bit = 0; bit < 8; bit++)
     {
         /* Wait for pin to go HIGH (start of bit) */
-        while (!GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN))
-            ;
+        while (!GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN)) ;
 
-        /* Wait 40 us --> determines whether bit is 0 or 1 */
-        SDK_DelayAtLeastUs(40, sctimerClock);
+        /* Wait 30 us --> determines whether bit is 0 or 1 */
+        SDK_DelayAtLeastUs(50, freq);
 
         if (GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN))
             value |= (1 << (7 - bit));   // write 1
@@ -108,8 +107,7 @@ uint8_t DHT11_ReadByte(void)
             value &= ~(1 << (7 - bit));  // write 0
 
         /* Wait until pin goes LOW (end of bit) */
-        while (GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN))
-            ;
+       // while (GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN))         ;
     }
 
     return value;
@@ -119,59 +117,115 @@ static void DHT11Task(void *param)
 {
     PRINTF("DHT11 Task Started\n");
 
-    uint8_t data[5];
+    uint8_t data[5] = {0};
 
     for(;;)
     {
+
+    	//START SEQUNCE
+    	uint32_t freq = CLOCK_GetFreq(sctimerClock);
         /* ----------- START SIGNAL ----------- */
         // Set pin as output HIGH
         gpio_pin_config_t out_cfg = { kGPIO_DigitalOutput, 1 };
         GPIO_PinInit(GPIO, DHT_PORT, DHT_PIN, &out_cfg);
-
-        SDK_DelayAtLeastUs(500000, sctimerClock);      // wait 500ms
         GPIO_PinWrite(GPIO, DHT_PORT, DHT_PIN, 0);     // pull LOW
-        SDK_DelayAtLeastUs(18000, sctimerClock);       // 18ms LOW
+        SDK_DelayAtLeastUs(50000, freq);      // wait 50ms
+        GPIO_PinWrite(GPIO, DHT_PORT, DHT_PIN, 1);     // pull HIGH
+
 
         // Release the bus
         gpio_pin_config_t in_cfg = { kGPIO_DigitalInput, 0 };
         GPIO_PinInit(GPIO, DHT_PORT, DHT_PIN, &in_cfg);
+    	//END START SEQUNCE
+        SDK_DelayAtLeastUs(40000, freq);       // 100ms LOW
+        uint8_t check = 0;
+        if (GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN) == 1) check = 1;
+        SDK_DelayAtLeastUs(80000, freq);       // 100ms LOW
+        check &= GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN);
+        // CHECKS
+        for(int i = 0; i < 40; i++)
+        {
+			if (check)
+			{
+				while(!GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN));
+				SDK_DelayAtLeastUs(30000, freq);       // 100ms LOW
+				if(!GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN))
+				{
+					data[i] = data[i] << 1;
+				}
+				else
+				{
+					data[i] += 1;
+				}
 
+			}
+        }
+
+        //SDK_DelayAtLeastUs(100000, freq);       // 100ms LOW
+
+
+        check &= GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN);
 
         /* ----------- DHT11 RESPONSE CHECK ----------- */
-
-        SDK_DelayAtLeastUs(40, sctimerClock);
-        int level40 = GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN);  // should be LOWs
-
-        SDK_DelayAtLeastUs(80, sctimerClock);
-        int level80 = GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN);  // should be HIGH
-
-        if (!(level40 == 0 && level80 == 1))
+        // After MCU start signal and releasing the bus
+        SDK_DelayAtLeastUs(30, freq);
+        uint8_t response = 0;
+        // DHT11 should pull LOW (80us)
+        if (GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN) == 0)
         {
-            PRINTF("DHT11 handshake error.\n");
+            // Wait while still LOW
+            while (GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN) == 0)
+                ;
+
+            // Now wait while HIGH (80us)
+            while (GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN) == 1)
+                ;
+
+            response = 1;
+        }
+        else
+        {
+            response = 0; // never went LOW → sensor not responding
+        }
+
+
+        if (!check)
+        {
+            PRINTF("DHT11 error.\n");
             continue;
         }
 
         /* ----------- SYNC TO FIRST BIT ----------- */
-        while (GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN));    // wait HIGH
-        while (!GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN));   // wait LOW
-        while (GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN));    // wait HIGH → LOW end
+    //    while (GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN));    // wait HIGH
+     //   while (!GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN));   // wait LOW
+     //   while (GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN));    // wait HIGH → LOW end
 
 
         /* ----------- READ 5 BYTES ----------- */
-        for (int i = 0; i < 5; i++)
-            data[i] = DHT11_ReadByte();
+//        for (int j = 0; j < 5; ++j)
+//        {
+//        	for (int i = 0; i < 8; ++i)
+//			{
+//				while(!GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN));
+//				SDK_DelayAtLeastUs(40, freq);
+//				if (GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN))
+//				{
+//					data[j] = data[j] << 1;
+//				}
+//				else
+//				{
+//					data[j] += 1;
+//				}
+//			}
+//        }
+            //data[i] = DHT11_ReadByte();
 
         /* ---------- VERIFY CHECKSUM ---------- */
         uint8_t checksum = data[0] + data[1] + data[2] + data[3];
 
-        if (checksum == data[4])
-        {
+
             PRINTF("Humidity: %d %%  Temp: %d C\n", data[0], data[2]);
-        }
-        else
-        {
-            PRINTF("Checksum ERROR! %d != %d\n", checksum, data[4]);
-        }
+
     }
 }
 
