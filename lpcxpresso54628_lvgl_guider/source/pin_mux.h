@@ -47,6 +47,9 @@ void BOARD_InitBootPins(void);
 #define PIO314_FUNC_ALT0 0x00u          /*!<@brief Selects pin function.: Alternative connection 0. */
 #define PIO32_DIGIMODE_DIGITAL 0x01u    /*!<@brief Select Analog/Digital mode.: Digital mode. */
 #define PIO32_FUNC_ALT0 0x00u           /*!<@brief Selects pin function.: Alternative connection 0. */
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 #define PIO40_DIGIMODE_DIGITAL 0x01u    /*!<@brief Select Analog/Digital mode.: Digital mode. */
 #define PIO40_FUNC_ALT0 0x00u           /*!<@brief Selects pin function.: Alternative connection 0. */
