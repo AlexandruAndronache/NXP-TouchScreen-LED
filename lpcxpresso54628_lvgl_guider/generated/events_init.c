@@ -15,26 +15,6 @@
 #include "freemaster_client.h"
 #endif
 
-extern volatile int pwm_value;
-
-static void screen_button_1_event_handler (lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    switch (code) {
-    case LV_EVENT_PRESSED:
-    {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen_1, guider_ui.screen_1_del, &guider_ui.screen_del, setup_scr_screen_1, LV_SCR_LOAD_ANIM_NONE, 200, 200, true, true);
-        break;
-    }
-    default:
-        break;
-    }
-}
-
-void events_init_screen (lv_ui *ui)
-{
-    lv_obj_add_event_cb(ui->screen_button_1, screen_button_1_event_handler, LV_EVENT_ALL, ui);
-}
 
 static void screen_1_slider_1_event_handler (lv_event_t *e)
 {
@@ -42,12 +22,8 @@ static void screen_1_slider_1_event_handler (lv_event_t *e)
     switch (code) {
     case LV_EVENT_VALUE_CHANGED:
     {
-        // get the slider object that triggered the event
-        lv_obj_t * slider = lv_event_get_target(e);
-
-        // read its current value
-        pwm_value = (uint32_t)lv_slider_get_value(slider);
-
+    	lv_obj_t * slider = lv_event_get_target(e);
+    	pwm_value = (uint32_t)lv_slider_get_value(slider);
 
         break;
     }
@@ -62,7 +38,6 @@ static void screen_1_btn_1_event_handler (lv_event_t *e)
     switch (code) {
     case LV_EVENT_PRESSED:
     {
-        ui_load_scr_animation(&guider_ui, &guider_ui.screen, guider_ui.screen_del, &guider_ui.screen_1_del, setup_scr_screen, LV_SCR_LOAD_ANIM_OVER_LEFT, 200, 200, true, true);
         break;
     }
     default:

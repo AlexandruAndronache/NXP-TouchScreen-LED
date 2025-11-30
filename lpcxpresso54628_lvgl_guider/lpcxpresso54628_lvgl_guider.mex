@@ -658,6 +658,8 @@
                   </pin>
                   <pin peripheral="GPIO" signal="PIO4, 0" pin_num="H13" pin_signal="PIO4_0/FC6_CTS_SDA_SSEL0/CTIMER4_CAP1/SCT0_GPI1/EMC_CSN(1)"/>
                   <pin peripheral="SCT0" signal="OUT, 3" pin_num="A3" pin_signal="PIO3_10/SCT0_OUT3/CTIMER3_MAT0/EMC_DYCSN(1)/TRACEDATA(0)"/>
+                  <pin peripheral="GPIO" signal="PIO3, 14" pin_num="E3" pin_signal="PIO3_14/SCT0_OUT4/FC9_RTS_SCL_SSEL1/CTIMER3_MAT1/TRACEDATA(2)"/>
+                  <pin peripheral="GPIO" signal="PIO3, 2" pin_num="C10" pin_signal="PIO3_2/LCD_VD(16)/FC9_RXD_SDA_MOSI/CTIMER1_MAT2"/>
                </pins>
             </function>
          </functions_list>
@@ -869,13 +871,71 @@
          </dcdx_profile>
          <dcdx_configurations/>
       </dcdx>
-      <periphs name="Peripherals" version="15.0" enabled="false" update_project_code="true">
-         <generated_project_files/>
+      <periphs name="Peripherals" version="15.0" enabled="true" update_project_code="true">
+         <dependencies>
+            <dependency resourceType="SWComponent" resourceId="platform.drivers.lpc_gpio" description="GPIO Driver is not found in the toolchain/IDE project. The project will not compile!" problem_level="2" source="Peripherals">
+               <feature name="enabled" evaluation="equal">
+                  <data type="Boolean">true</data>
+               </feature>
+            </dependency>
+            <dependency resourceType="SWComponent" resourceId="platform.drivers.lpc_gpio" description="An unsupported version of the GPIO Driver in the toolchain/IDE project. Required: ${required_value}, actual: ${actual_value}. The project might not compile correctly." problem_level="1" source="Peripherals">
+               <feature name="version" evaluation="equivalent">
+                  <data type="Version">2.1.1</data>
+               </feature>
+            </dependency>
+         </dependencies>
+         <generated_project_files>
+            <file path="board/peripherals.c" update_enabled="true"/>
+            <file path="board/peripherals.h" update_enabled="true"/>
+         </generated_project_files>
          <peripherals_profile>
-            <processor_version>N/A</processor_version>
+            <processor_version>25.06.10</processor_version>
          </peripherals_profile>
-         <functional_groups/>
-         <components/>
+         <functional_groups>
+            <functional_group name="BOARD_InitPeripherals" uuid="0d41bbfe-6b57-48bc-a076-fc5a8c280f9d" called_from_default_init="true" id_prefix="" core="core0">
+               <description></description>
+               <options/>
+               <dependencies/>
+               <instances>
+                  <instance name="NVIC" uuid="b6ce28a5-28f4-4608-be59-d53407443eb5" type="nvic" type_id="nvic" mode="general" peripheral="NVIC" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                     <config_set name="nvic">
+                        <array name="interrupt_table"/>
+                        <array name="interrupts"/>
+                     </config_set>
+                  </instance>
+                  <instance name="GPIO" uuid="23b298c9-73a4-4ef0-96d1-29231c7fcbbd" type="lpc_gpio" type_id="lpc_gpio_2.1.1" mode="GPIO" peripheral="GPIO" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                     <config_set name="lpc_gpio"/>
+                  </instance>
+               </instances>
+            </functional_group>
+         </functional_groups>
+         <components>
+            <component name="system" uuid="bb074ba6-ce8e-48bd-9c67-93897659067a" type_id="system">
+               <config_set_global name="global_system_definitions">
+                  <setting name="user_definitions" value=""/>
+                  <setting name="user_includes" value=""/>
+                  <setting name="global_init" value=""/>
+               </config_set_global>
+            </component>
+            <component name="uart_cmsis_common" uuid="3c455e34-3673-4ebb-b98f-4d8fc34ac223" type_id="uart_cmsis_common">
+               <config_set_global name="global_USART_CMSIS_common" quick_selection="default"/>
+            </component>
+            <component name="msg" uuid="2c141abc-afb0-4b98-8e48-433c41193f3e" type_id="msg">
+               <config_set_global name="global_messages"/>
+            </component>
+            <component name="gpio_adapter_common" uuid="a22e2779-838c-4da3-9945-a68488f66df9" type_id="gpio_adapter_common">
+               <config_set_global name="global_gpio_adapter_common" quick_selection="default"/>
+            </component>
+            <component name="generic_uart" uuid="255727d1-056e-4ecb-a853-67c8f93188c9" type_id="generic_uart">
+               <config_set_global name="global_uart"/>
+            </component>
+            <component name="generic_enet" uuid="c655c9fb-a8d7-4c75-8452-42d7c61fc25f" type_id="generic_enet">
+               <config_set_global name="global_enet"/>
+            </component>
+            <component name="generic_can" uuid="dad158e7-930e-4a94-a3a9-05e34e5d9cb3" type_id="generic_can">
+               <config_set_global name="global_can"/>
+            </component>
+         </components>
       </periphs>
       <tee name="TEE" version="9.0" enabled="false" update_project_code="true">
          <generated_project_files/>

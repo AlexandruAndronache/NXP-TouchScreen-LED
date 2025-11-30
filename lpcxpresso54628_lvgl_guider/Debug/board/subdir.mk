@@ -5,15 +5,18 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../board/board.c \
-../board/clock_config.c 
+../board/clock_config.c \
+../board/peripherals.c 
 
 C_DEPS += \
 ./board/board.d \
-./board/clock_config.d 
+./board/clock_config.d \
+./board/peripherals.d 
 
 OBJS += \
 ./board/board.o \
-./board/clock_config.o 
+./board/clock_config.o \
+./board/peripherals.o 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -28,7 +31,7 @@ board/%.o: ../board/%.c board/subdir.mk
 clean: clean-board
 
 clean-board:
-	-$(RM) ./board/board.d ./board/board.o ./board/clock_config.d ./board/clock_config.o
+	-$(RM) ./board/board.d ./board/board.o ./board/clock_config.d ./board/clock_config.o ./board/peripherals.d ./board/peripherals.o
 
 .PHONY: clean-board
 

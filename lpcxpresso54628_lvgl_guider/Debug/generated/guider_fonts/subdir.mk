@@ -4,14 +4,17 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../generated/guider_fonts/lv_font_montserratMedium_12.c \
 ../generated/guider_fonts/lv_font_montserratMedium_16.c \
 ../generated/guider_fonts/lv_font_montserratMedium_18.c 
 
 C_DEPS += \
+./generated/guider_fonts/lv_font_montserratMedium_12.d \
 ./generated/guider_fonts/lv_font_montserratMedium_16.d \
 ./generated/guider_fonts/lv_font_montserratMedium_18.d 
 
 OBJS += \
+./generated/guider_fonts/lv_font_montserratMedium_12.o \
 ./generated/guider_fonts/lv_font_montserratMedium_16.o \
 ./generated/guider_fonts/lv_font_montserratMedium_18.o 
 
@@ -28,7 +31,7 @@ generated/guider_fonts/%.o: ../generated/guider_fonts/%.c generated/guider_fonts
 clean: clean-generated-2f-guider_fonts
 
 clean-generated-2f-guider_fonts:
-	-$(RM) ./generated/guider_fonts/lv_font_montserratMedium_16.d ./generated/guider_fonts/lv_font_montserratMedium_16.o ./generated/guider_fonts/lv_font_montserratMedium_18.d ./generated/guider_fonts/lv_font_montserratMedium_18.o
+	-$(RM) ./generated/guider_fonts/lv_font_montserratMedium_12.d ./generated/guider_fonts/lv_font_montserratMedium_12.o ./generated/guider_fonts/lv_font_montserratMedium_16.d ./generated/guider_fonts/lv_font_montserratMedium_16.o ./generated/guider_fonts/lv_font_montserratMedium_18.d ./generated/guider_fonts/lv_font_montserratMedium_18.o
 
 .PHONY: clean-generated-2f-guider_fonts
 

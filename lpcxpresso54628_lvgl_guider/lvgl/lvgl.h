@@ -137,6 +137,8 @@ extern "C" {
  * GLOBAL PROTOTYPES
  **********************/
 extern volatile int pwm_value;
+extern  uint8_t data[5];  // declare it as extern
+extern char str[8];
 /**********************
  *      MACROS
  **********************/

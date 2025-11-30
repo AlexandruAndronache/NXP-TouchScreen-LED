@@ -6,21 +6,18 @@
 C_SRCS += \
 ../generated/events_init.c \
 ../generated/gui_guider.c \
-../generated/setup_scr_screen.c \
 ../generated/setup_scr_screen_1.c \
 ../generated/widgets_init.c 
 
 C_DEPS += \
 ./generated/events_init.d \
 ./generated/gui_guider.d \
-./generated/setup_scr_screen.d \
 ./generated/setup_scr_screen_1.d \
 ./generated/widgets_init.d 
 
 OBJS += \
 ./generated/events_init.o \
 ./generated/gui_guider.o \
-./generated/setup_scr_screen.o \
 ./generated/setup_scr_screen_1.o \
 ./generated/widgets_init.o 
 
@@ -37,7 +34,7 @@ generated/%.o: ../generated/%.c generated/subdir.mk
 clean: clean-generated
 
 clean-generated:
-	-$(RM) ./generated/events_init.d ./generated/events_init.o ./generated/gui_guider.d ./generated/gui_guider.o ./generated/setup_scr_screen.d ./generated/setup_scr_screen.o ./generated/setup_scr_screen_1.d ./generated/setup_scr_screen_1.o ./generated/widgets_init.d ./generated/widgets_init.o
+	-$(RM) ./generated/events_init.d ./generated/events_init.o ./generated/gui_guider.d ./generated/gui_guider.o ./generated/setup_scr_screen_1.d ./generated/setup_scr_screen_1.o ./generated/widgets_init.d ./generated/widgets_init.o
 
 .PHONY: clean-generated
 

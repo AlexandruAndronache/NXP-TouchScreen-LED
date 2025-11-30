@@ -2030,7 +2030,7 @@
             #define LV_USE_KEYBOARD 0
         #endif
     #else
-        #define LV_USE_KEYBOARD   1
+        #define LV_USE_KEYBOARD   0
     #endif
 #endif
 
