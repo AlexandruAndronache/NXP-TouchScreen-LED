@@ -31,6 +31,9 @@
 #define DHT_START_LOW_US      18000u // 18 ms
 #define DHT_PULLUP_WAIT_US    40u    // 20-40 us
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -99,6 +102,7 @@ static void PwmTask(void *param)
     }
 }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 
@@ -273,6 +277,177 @@ static void PwmTask(void *param)
 //
 //}
 
+=======
+//uint8_t DHT11_ReadByte(void)
+//{
+//    uint8_t value = 0;
+//    for (int bit = 0; bit < 8; bit++)
+//    {
+//        /* Wait for pin to go HIGH (start of bit) */
+//        while (!GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN)) ;
+//
+//        /* Wait 30 us --> determines whether bit is 0 or 1 */
+//        SDK_DelayAtLeastUs(50, freq);
+//
+//        if (GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN))
+//            value |= (1 << (7 - bit));   // write 1
+//        else
+//            value &= ~(1 << (7 - bit));  // write 0
+//
+//        /* Wait until pin goes LOW (end of bit) */
+//       // while (GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN))         ;
+//    }
+//
+//    return value;
+//}
+
+
+//
+//static void DHT11Task11111(void *param)
+//{
+//    PRINTF("DHT11 Task Started\n");
+//
+//    uint8_t data[5] = {0};
+//    uint32_t freq = CLOCK_GetFreq(kCLOCK_CoreSysClk);
+//    uint8_t check1 = 0;
+//    uint8_t check2 = 0;
+//    int check3 = 0;
+//    for(;;)
+//    {
+//    	check1 = 0;
+//    	check2 = 0;
+//    	check3 = 0;
+//        memset(data, 0, sizeof(data));
+//        uint32_t counter = 0;
+//
+//        /* ============================================================
+//         *  DHT11 START SIGNAL (Correct Sequence)
+//         * ============================================================*/
+//
+//        // 1. MCU drives LOW for 18 ms
+//        gpio_pin_config_t out_cfg = { kGPIO_DigitalOutput, 1 };
+//        GPIO_PinInit(GPIO, DHT_PORT, DHT_PIN, &out_cfg);
+//        GPIO_PinWrite(GPIO, DHT_PORT, DHT_PIN, 1); // HIgh default
+//        vTaskDelay(pdMS_TO_TICKS(2000));
+//        GPIO_PinWrite(GPIO, DHT_PORT, DHT_PIN, 0); // 20 ms LOW
+//        counter = DEMO_GetUsTimer();
+//        while(DEMO_GetUsElapsed(counter) < 18000);
+//        gpio_pin_config_t in_cfg = { kGPIO_DigitalInput, 0 };
+//        GPIO_PinInit(GPIO, DHT_PORT, DHT_PIN, &in_cfg);
+//
+//        // IMPORTANT: WAIT 20–40 µs to let pull-up bring line HIGH
+//        counter = DEMO_GetUsTimer();
+//        while((DEMO_GetUsElapsed(counter) < 80))
+//        {
+//        	if(!GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN))
+//        	{
+//        		check1 = 1;
+//        	}
+//        }
+//
+//        counter = DEMO_GetUsTimer();
+//        while((DEMO_GetUsElapsed(counter) < 80))
+//        {
+//        	if(GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN))
+//        	{
+//        		check2 = 1;
+//        	}
+//        }
+//
+//
+//
+//
+//        int high_from_pullup = DEMO_GetUsElapsed(counter);
+//         //pin = GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN);
+//       // PRINTF("LINE: %d high_from_pullup time: %d", pin, high_from_pullup);
+//
+//        /* ============================================================
+//         *  CHECK DHT11 RESPONSE
+//         * ============================================================*/
+//
+//        // DHT11 should pull LOW for 80 µs
+////        counter = DEMO_GetUsTimer();
+////        while(GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN) == 0);
+////         pin = GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN);
+////        int res1 = DEMO_GetUsElapsed(counter);
+////
+////        counter = DEMO_GetUsTimer();
+////        while(GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN) == 1);
+////         int pin2 = GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN);
+////        int res2 = DEMO_GetUsElapsed(counter);
+//
+//        if(check1 && check2)
+//        {
+//        	check1 = 0;
+//        	check2 = 0;
+//        	for (int i = 0; i < 5; ++i)
+//        		for(int j = 0; j < 8; ++j)
+//        		{
+//
+//						counter = DEMO_GetUsTimer();
+//						//
+//
+//						while (GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN) == 0);
+//						int time = DEMO_GetUsElapsed(counter);
+//						if(GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN) == 1) check3 = 1;
+//						if(check3)
+//						{
+//							counter = DEMO_GetUsTimer();
+////							if(GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN))
+////							{
+////								if(DEMO_GetUsElapsed(counter) > 80) return;
+////							}
+//
+//								while(DEMO_GetUsElapsed(counter) < 28);
+//								if(GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN))
+//								{
+//									data[i] = data[i] << 1;// threshold
+//									data[i] += 1;
+//								}
+//								else
+//								{
+//									data[i] = data[i] << 1;// threshold
+//
+//								}
+//							}
+////							if (GPIO_PinRead(GPIO,DHT_PORT, DHT_PIN) )
+////							{
+////
+////
+////							}
+////							else
+////							{
+////								data[i] = data[i] << 1;
+////							}
+//							check3 = 0;
+//						}
+//
+//
+//					}
+//
+//        PRINTF("Humidity: %d %% Temp: %d C\n", data[0], data[2]);
+//        memset(data, 0, sizeof(data));
+//
+//        		}
+//
+//
+//        /* ============================================================
+//         *  PRINT RESULT
+//         * ============================================================*/
+//
+//        uint8_t checksum = data[0] + data[1] + data[2] + data[3];
+//
+//       // if (checksum == data[4])
+//
+//
+//
+////
+////NEXT_LOOP:
+////        SDK_DelayAtLeastUs(2000000, freq);   // 2 seconds
+//
+//}
+
+>>>>>>> Stashed changes
 =======
 //uint8_t DHT11_ReadByte(void)
 //{
@@ -736,6 +911,9 @@ static void DHT11Task(void *param)
 
 }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

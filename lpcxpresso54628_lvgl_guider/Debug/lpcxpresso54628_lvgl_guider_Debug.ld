@@ -8,7 +8,11 @@
  * Using Freemarker v2.3.30
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
  * MCUXpresso IDE v25.6 [Build 136] [2025-06-27] on Nov 3, 2025, 10:22:02 PM
+=======
+ * MCUXpresso IDE v25.6 [Build 136] [2025-06-27] on Nov 30, 2025, 10:31:33 AM
+>>>>>>> Stashed changes
 =======
  * MCUXpresso IDE v25.6 [Build 136] [2025-06-27] on Nov 30, 2025, 10:31:33 AM
 >>>>>>> Stashed changes

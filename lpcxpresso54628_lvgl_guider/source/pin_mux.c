@@ -1169,6 +1169,7 @@ void BOARD_InitPins(void)
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
     IOCON->PIO[3][14] = ((IOCON->PIO[3][14] &
                           /* Mask bits to zero which are setting */
@@ -1177,6 +1178,31 @@ void BOARD_InitPins(void)
     IOCON->PIO[3][14] = ((IOCON->PIO[3][14] &
                           /* Mask bits to zero which are setting */
                           (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))
+=======
+    IOCON->PIO[3][14] = ((IOCON->PIO[3][14] &
+                          /* Mask bits to zero which are setting */
+                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))
+
+                         /* Selects pin function.
+                          * : PORT314 (pin E3) is configured as PIO3_14. */
+                         | IOCON_PIO_FUNC(PIO314_FUNC_ALT0)
+
+                         /* Select Analog/Digital mode.
+                          * : Digital mode. */
+                         | IOCON_PIO_DIGIMODE(PIO314_DIGIMODE_DIGITAL));
+
+    IOCON->PIO[3][2] = ((IOCON->PIO[3][2] &
+                         /* Mask bits to zero which are setting */
+                         (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))
+
+                        /* Selects pin function.
+                         * : PORT32 (pin C10) is configured as PIO3_2. */
+                        | IOCON_PIO_FUNC(IOCON_PIO_FUNC0)
+
+                        /* Select Analog/Digital mode.
+                         * : Digital mode. */
+                        | IOCON_PIO_DIGIMODE(PIO32_DIGIMODE_DIGITAL));
+>>>>>>> Stashed changes
 
                          /* Selects pin function.
                           * : PORT314 (pin E3) is configured as PIO3_14. */
