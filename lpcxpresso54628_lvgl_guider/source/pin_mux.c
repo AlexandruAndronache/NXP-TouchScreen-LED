@@ -170,6 +170,8 @@ BOARD_InitPins:
     slew_rate: standard, open_drain: disabled}
   - {pin_num: H13, peripheral: GPIO, signal: 'PIO4, 0', pin_signal: PIO4_0/FC6_CTS_SDA_SSEL0/CTIMER4_CAP1/SCT0_GPI1/EMC_CSN(1)}
   - {pin_num: A3, peripheral: SCT0, signal: 'OUT, 3', pin_signal: PIO3_10/SCT0_OUT3/CTIMER3_MAT0/EMC_DYCSN(1)/TRACEDATA(0)}
+  - {pin_num: E3, peripheral: GPIO, signal: 'PIO3, 14', pin_signal: PIO3_14/SCT0_OUT4/FC9_RTS_SCL_SSEL1/CTIMER3_MAT1/TRACEDATA(2)}
+  - {pin_num: C10, peripheral: GPIO, signal: 'PIO3, 2', pin_signal: PIO3_2/LCD_VD(16)/FC9_RXD_SDA_MOSI/CTIMER1_MAT2}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -1165,6 +1167,33 @@ void BOARD_InitPins(void)
                           * : Digital mode. */
                          | IOCON_PIO_DIGIMODE(PIO310_DIGIMODE_DIGITAL));
 
+<<<<<<< Updated upstream
+=======
+    IOCON->PIO[3][14] = ((IOCON->PIO[3][14] &
+                          /* Mask bits to zero which are setting */
+                          (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))
+
+                         /* Selects pin function.
+                          * : PORT314 (pin E3) is configured as PIO3_14. */
+                         | IOCON_PIO_FUNC(PIO314_FUNC_ALT0)
+
+                         /* Select Analog/Digital mode.
+                          * : Digital mode. */
+                         | IOCON_PIO_DIGIMODE(PIO314_DIGIMODE_DIGITAL));
+
+    IOCON->PIO[3][2] = ((IOCON->PIO[3][2] &
+                         /* Mask bits to zero which are setting */
+                         (~(IOCON_PIO_FUNC_MASK | IOCON_PIO_DIGIMODE_MASK)))
+
+                        /* Selects pin function.
+                         * : PORT32 (pin C10) is configured as PIO3_2. */
+                        | IOCON_PIO_FUNC(IOCON_PIO_FUNC0)
+
+                        /* Select Analog/Digital mode.
+                         * : Digital mode. */
+                        | IOCON_PIO_DIGIMODE(PIO32_DIGIMODE_DIGITAL));
+
+>>>>>>> Stashed changes
     const uint32_t FC2_SDAX = (/* Pin is configured as FC2_CTS_SDA_SSEL0 */
                                IOCON_PIO_FUNC1 |
                                /* I2C mode */
