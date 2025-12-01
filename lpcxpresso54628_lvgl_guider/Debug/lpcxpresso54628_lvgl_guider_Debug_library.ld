@@ -6,7 +6,7 @@
  * Generated linker script file for LPC54628J512
  * Created from library.ldt by FMCreateLinkLibraries
  * Using Freemarker v2.3.30
- * MCUXpresso IDE v25.6 [Build 136] [2025-06-27] on Nov 30, 2025, 4:33:17 PM
+ * MCUXpresso IDE v25.6 [Build 136] [2025-06-27] on Dec 1, 2025, 3:40:00 PM
  */
 
 GROUP (

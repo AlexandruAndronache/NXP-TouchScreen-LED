@@ -143,6 +143,9 @@ lvgl/src/widgets/tabview \
 lvgl/src/widgets/textarea \
 lvgl/src/widgets/tileview \
 lvgl/src/widgets/win \
+source/APP \
+source/BSW \
+source/RTE \
 source \
 startup \
 touchpanel \

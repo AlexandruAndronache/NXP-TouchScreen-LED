@@ -14,6 +14,9 @@ RM := rm -rf
 -include utilities/subdir.mk
 -include touchpanel/subdir.mk
 -include startup/subdir.mk
+-include source/RTE/subdir.mk
+-include source/BSW/subdir.mk
+-include source/APP/subdir.mk
 -include source/subdir.mk
 -include lvgl/src/widgets/win/subdir.mk
 -include lvgl/src/widgets/tileview/subdir.mk
