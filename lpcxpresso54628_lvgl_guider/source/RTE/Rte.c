@@ -3,6 +3,7 @@
 #include "../BSW/Bsw_Gpio.h"
 #include "../BSW/Bsw_Pwm.h"
 //#include "Bsw_Display.h"
+#include <stddef.h>
 
 /* If some BSW modules need initialization, do it here. */
 Std_ReturnType Rte_Init(void)

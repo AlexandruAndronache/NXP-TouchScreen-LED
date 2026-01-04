@@ -6,12 +6,12 @@ typedef unsigned short uint16;
 typedef unsigned int   uint32;
 typedef long           BaseType_t;
 
-
+#include "fsl_debug_console.h"
 #include "stdint.h"
-#include "lvgl_demo_utils.h"
-#include "stddef.h"
-#include "LPC54628_COMMON.h"
-#include "fsl_gpio.h"
+//#include "lvgl_demo_utils.h"
+//#include "stddef.h"
+//#include "LPC54628_COMMON.h"
+//#include "fsl_gpio.h"
 typedef enum {
     E_OK = 0,
     E_NOT_OK = 1

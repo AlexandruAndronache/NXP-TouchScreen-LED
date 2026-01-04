@@ -1,12 +1,12 @@
 /*
  * GENERATED FILE - DO NOT EDIT
  * Copyright 2008-2013 Code Red Technologies Ltd,
- * Copyright 2013-2025 NXP
+ * Copyright 2013-2026 NXP
  * SPDX-License-Identifier: BSD-3-Clause
  * Generated linker script file for LPC54628J512
  * Created from linkscript.ldt by FMCreateLinkLibraries
  * Using Freemarker v2.3.30
- * MCUXpresso IDE v25.6 [Build 136] [2025-06-27] on Dec 1, 2025, 3:40:00 PM
+ * MCUXpresso IDE v25.6 [Build 136] [2025-06-27] on Jan 4, 2026, 4:31:35 PM
  */
 
 INCLUDE "lpcxpresso54628_lvgl_guider_Debug_library.ld"

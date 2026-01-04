@@ -19,6 +19,7 @@ typedef struct {
     uint8_t temperature;
 } DHT11_DataType;
 
+Std_ReturnType Bsw_DHT11_Init();
 Std_ReturnType Bsw_DHT11_Read(DHT11_DataType_raw *data);
 
 #endif

@@ -6,17 +6,13 @@
 #include "../RTE/Rte.h"
 
 
-void App_Logic_MainLoop(void);
-
-
-/* Sensor/logic updates */
+void App_Logic_MainLoop();
+void App_Logic_PrepareUiData();
+uint8_t App_Logic_GetPwmValue();
+void App_Logic_SetMotorPwm(void);
 void App_Logic_UpdateSensorValues(void);
+void LCD_Init(void);
+void LCD_Display(void);
 
-
-/* Getters */
-uint8_t App_Logic_GetTemperature(void);
-uint8_t App_Logic_GetHumidity(void);
-uint8_t App_Logic_GetMotorPwm(void);
-void App_Logic_SetMotorPwm(uint8_t dutyPercent);
 
 #endif /* APP_LOGIC_H */

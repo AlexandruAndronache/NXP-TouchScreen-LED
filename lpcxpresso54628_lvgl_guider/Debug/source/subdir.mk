@@ -9,6 +9,7 @@ C_SRCS += \
 ../source/lvgl_freertos.c \
 ../source/lvgl_guider.c \
 ../source/lvgl_support.c \
+../source/main.c \
 ../source/pin_mux.c \
 ../source/pwm.c \
 ../source/semihost_hardfault.c 
@@ -19,6 +20,7 @@ C_DEPS += \
 ./source/lvgl_freertos.d \
 ./source/lvgl_guider.d \
 ./source/lvgl_support.d \
+./source/main.d \
 ./source/pin_mux.d \
 ./source/pwm.d \
 ./source/semihost_hardfault.d 
@@ -29,6 +31,7 @@ OBJS += \
 ./source/lvgl_freertos.o \
 ./source/lvgl_guider.o \
 ./source/lvgl_support.o \
+./source/main.o \
 ./source/pin_mux.o \
 ./source/pwm.o \
 ./source/semihost_hardfault.o 
@@ -46,7 +49,7 @@ source/%.o: ../source/%.c source/subdir.mk
 clean: clean-source
 
 clean-source:
-	-$(RM) ./source/hardware_init.d ./source/hardware_init.o ./source/lvgl_demo_utils.d ./source/lvgl_demo_utils.o ./source/lvgl_freertos.d ./source/lvgl_freertos.o ./source/lvgl_guider.d ./source/lvgl_guider.o ./source/lvgl_support.d ./source/lvgl_support.o ./source/pin_mux.d ./source/pin_mux.o ./source/pwm.d ./source/pwm.o ./source/semihost_hardfault.d ./source/semihost_hardfault.o
+	-$(RM) ./source/hardware_init.d ./source/hardware_init.o ./source/lvgl_demo_utils.d ./source/lvgl_demo_utils.o ./source/lvgl_freertos.d ./source/lvgl_freertos.o ./source/lvgl_guider.d ./source/lvgl_guider.o ./source/lvgl_support.d ./source/lvgl_support.o ./source/main.d ./source/main.o ./source/pin_mux.d ./source/pin_mux.o ./source/pwm.d ./source/pwm.o ./source/semihost_hardfault.d ./source/semihost_hardfault.o
 
 .PHONY: clean-source
 
