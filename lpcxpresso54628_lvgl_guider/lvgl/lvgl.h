@@ -139,6 +139,7 @@ extern "C" {
 extern volatile int pwm_value;
 extern  uint8_t data[5];  // declare it as extern
 extern char str[8];
+extern volatile uint8_t button;
 /**********************
  *      MACROS
  **********************/

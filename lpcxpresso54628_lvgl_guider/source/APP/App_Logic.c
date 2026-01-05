@@ -12,7 +12,7 @@
 #include "lvgl_demo_utils.h"
 #include "stdio.h"
 #include "string.h"
-
+#include "PI_Control.h"
 
 ///*******************************************************************************
 // * Definitions
@@ -30,6 +30,7 @@
 static volatile bool s_lvgl_initialized = false;
 lv_ui guider_ui;
 volatile int pwm_value = 50;
+volatile uint8_t button = 0;
 BaseType_t stat;
 BaseType_t stat_pwm;
 BaseType_t stat_dht11;
@@ -56,6 +57,7 @@ uint8_t g_hum = 0;
 //void ui_fast_update_timer(lv_timer_t *t);
 //void ui_slow_update_timer(lv_timer_t *t);
 void App_Logic_PrepareUiData();
+void App_Logic_SetMotorPwm_PI();
 //void App_Logic_MainLoop();
 
 #if LV_USE_LOG
@@ -72,7 +74,28 @@ void App_Logic_MainLoop()
 /* Future state machines or application logic */
 
 	//App_Logic_UpdateSensorValues();
-	App_Logic_SetMotorPwm();
+
+	switch(button)
+		{
+	case 0:
+	{
+		App_Logic_SetMotorPwm();
+		PRINTF("MANUAL MODE\n");
+		break;
+	}
+	case 1:
+	{
+		App_Logic_SetMotorPwm_PI();
+		PRINTF("AUTO MODE\n");
+		break;
+	}
+	default:
+	{
+		PRINTF("ERROR IN STATE MACHINE\n");
+	}
+		}
+	//App_Logic_SetMotorPwm();
+	//App_Logic_SetMotorPwm_PI();
 	//App_Logic_PrepareUiData();
 //	LCD_Init();
 //	LCD_Display();
@@ -88,7 +111,7 @@ void App_Logic_PrepareUiData()
     /* Temperature + Humidity */
 	snprintf(data_for_display, sizeof(data_for_display),
 							 "T:%d H:%d", g_temp, g_hum);
-	PRINTF("T:%d H:%d", g_temp, g_hum);
+	//PRINTF("T:%d H:%d", g_temp, g_hum);
 }
 
 /* Acquire sensor values via RTE */
@@ -121,51 +144,8 @@ void App_Logic_UpdateSensorValues(void)
 }
 
 
-//Std_ReturnType App_Logic_GetTemperature(void)
-//{
-//	if (Bsw_DHT11_Init() != E_OK)
-//	{
-//		return E_NOT_OK;
-//	}
-//	else
-//	{
-//		if(Bsw_DHT11_Read(&data_raw) != E_OK)
-//		{
-//			return E_NOT_OK;
-//		}
-//		else
-//		{
-//			data_processed.temperature = data_raw.data_raw[2];
-//			return E_OK;
-//		}
-//	}
-//
-//	return E_NOT_OK;
-//
-//}
-//
-//
-//Std_ReturnType App_Logic_GetHumidity(void)
-//{
-//	if (Bsw_DHT11_Init() != E_OK)
-//	{
-//		return E_NOT_OK;
-//	}
-//	else
-//	{
-//		if(Bsw_DHT11_Read(&data_raw) != E_OK)
-//		{
-//			return E_NOT_OK;
-//		}
-//		else
-//		{
-//			data_processed.humidity = data_raw.data_raw[0];
-//			return E_OK;
-//		}
-//	}
-//
-//	return E_NOT_OK;
-//}
+
+
 
 uint8_t App_Logic_GetPwmValue()
 {
@@ -178,6 +158,15 @@ void App_Logic_SetMotorPwm(void)
 {
 	uint8_t pwm_internal = App_Logic_GetPwmValue();
 	Rte_Write_PwmDuty(pwm_internal);
+}
+
+void App_Logic_SetMotorPwm_PI(void)
+{
+	uint8_t desired_temp = 20;
+	uint8_t internal_temp = (uint8_t)pwm_value;
+	uint8_t pwm_internal = PI_Controller_Run(&g_temp, &internal_temp); // 100 duty_cycle and 10 max control value
+	Rte_Write_PwmDuty(pwm_internal);
+	PRINTF("PWM FROM PI: %d\n",pwm_internal);
 }
 
 void ui_fast_update_timer(lv_timer_t *t)

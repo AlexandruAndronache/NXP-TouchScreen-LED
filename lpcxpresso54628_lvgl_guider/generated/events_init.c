@@ -25,6 +25,15 @@ static void screen_1_slider_1_event_handler (lv_event_t *e)
     	lv_obj_t * slider = lv_event_get_target(e);
     	pwm_value = (uint32_t)lv_slider_get_value(slider);
 
+    	if (button != 0)
+    	{
+    		lv_slider_set_range(slider, 0, 30);
+    	}
+    	else
+    	{
+    		lv_slider_set_range(slider, 0, 100);
+    	}
+
         break;
     }
     default:
@@ -38,6 +47,9 @@ static void screen_1_btn_1_event_handler (lv_event_t *e)
     switch (code) {
     case LV_EVENT_PRESSED:
     {
+    	if (button != 0)
+    		button = 0;
+    	else button = 1;
         break;
     }
     default:

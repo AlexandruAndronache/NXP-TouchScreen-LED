@@ -6,17 +6,20 @@
 C_SRCS += \
 ../source/APP/App_Init.c \
 ../source/APP/App_Logic.c \
-../source/APP/App_Tasks.c 
+../source/APP/App_Tasks.c \
+../source/APP/PI_Control.c 
 
 C_DEPS += \
 ./source/APP/App_Init.d \
 ./source/APP/App_Logic.d \
-./source/APP/App_Tasks.d 
+./source/APP/App_Tasks.d \
+./source/APP/PI_Control.d 
 
 OBJS += \
 ./source/APP/App_Init.o \
 ./source/APP/App_Logic.o \
-./source/APP/App_Tasks.o 
+./source/APP/App_Tasks.o \
+./source/APP/PI_Control.o 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -31,7 +34,7 @@ source/APP/%.o: ../source/APP/%.c source/APP/subdir.mk
 clean: clean-source-2f-APP
 
 clean-source-2f-APP:
-	-$(RM) ./source/APP/App_Init.d ./source/APP/App_Init.o ./source/APP/App_Logic.d ./source/APP/App_Logic.o ./source/APP/App_Tasks.d ./source/APP/App_Tasks.o
+	-$(RM) ./source/APP/App_Init.d ./source/APP/App_Init.o ./source/APP/App_Logic.d ./source/APP/App_Logic.o ./source/APP/App_Tasks.d ./source/APP/App_Tasks.o ./source/APP/PI_Control.d ./source/APP/PI_Control.o
 
 .PHONY: clean-source-2f-APP
 
