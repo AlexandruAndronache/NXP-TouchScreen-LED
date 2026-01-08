@@ -28,6 +28,13 @@ typedef enum {
 #define TRUE 1
 #define FALSE 0
 
+#define CHANNEL_0 0
+
+#define MAX_DUTY_CYCLE 100
+#define _50_DUTY_CYCLE 50U
+#define MIN_DUTY_CYCLE 0
+#define _0_DUTY_CYCLE 0
+
 
 
 #endif

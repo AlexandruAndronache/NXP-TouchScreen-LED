@@ -32,6 +32,7 @@ Std_ReturnType Bsw_Pwm_Init(uint8 channel)
     // Setup PWM and guard for fail
     if (SCTIMER_SetupPwm(SCT0, &pwmParam, kSCTIMER_EdgeAlignedPwm, PWM_signal_frequency_Hz, sctimerClock, &event) == kStatus_Fail)
     {
+    	// LOG ERROR EM_ERROR_PWM_SETUP_FAILED
         return E_NOT_OK;
     }
     return E_OK;

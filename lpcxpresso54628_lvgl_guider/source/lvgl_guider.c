@@ -1,6 +1,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "stddef.h"
+#include "RTE/Rte.h"
 
 //#include "board.h"
 #include "app.h"
@@ -10,14 +11,15 @@
 #include "APP/App_Tasks.h"
 #include "lvgl_demo_utils.h"
 
+void Init_Everything();
+
 ///*******************************************************************************
 // * Main
 // ******************************************************************************/
 int main(void)
 {
-    /* Basic MCU / board init */
-	BOARD_InitHardware();
-    DEMO_InitUsTimer();
+
+	Init_Everything();
 
     /* Create LVGL task (UI owner) */
     xTaskCreate(
@@ -54,4 +56,12 @@ int main(void)
     for (;;)
     {
     }
+}
+
+void Init_Everything()
+{
+    /* Basic MCU / board init */
+	BOARD_InitHardware();
+	DEMO_InitUsTimer();
+	Rte_Init();
 }

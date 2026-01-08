@@ -29,27 +29,30 @@
  ******************************************************************************/
 static volatile bool s_lvgl_initialized = false;
 lv_ui guider_ui;
-volatile int pwm_value = 50;
-volatile uint8_t button = 0;
-BaseType_t stat;
-BaseType_t stat_pwm;
-BaseType_t stat_dht11;
-BaseType_t stat_update_values;
+volatile int pwm_value;
+volatile uint8_t button;
+//BaseType_t stat;
+//BaseType_t stat_pwm;
+//BaseType_t stat_dht11;
+//BaseType_t stat_update_values;
 //sctimer_config_t sctimerInfo;
 //sctimer_pwm_signal_param_t pwmParam;
 //sctimer_pwm_signal_param_t pwmParam1;
 //uint32_t event;
 //uint32_t sctimerClock;
-DHT11_DataType_raw data_raw;
-DHT11_DataType data_processed;
+//DHT11_DataType_raw data_raw;
+//DHT11_DataType data_processed;
 char data_for_display[32];
 char buffer[32];
 char str[8];
 char button_label[10];
-uint8_t temp;
-extern uint8_t g_temp = 0;
-uint8_t g_hum = 0;
+//uint8_t temp;
+uint8_t global_temperature;
+uint8_t global_humidity;
 //uint8_t g_pwm_duty_cycle = 0;
+
+
+
 
 /*******************************************************************************
  * Prototypes
@@ -74,64 +77,93 @@ enum e_state
 {
 	MANUAL = 0,
 	AUTO = 1,
-	START = 2,
+	RESET = 2,
 	ERROR = 3
 } ;
 
-
-
-
 enum e_state MODE;
 
-
-void App_Logic_UpdateState()
+Std_ReturnType App_Init_Variables()
 {
-	MODE = button;
+	pwm_value = 0;
+	button = 0;
+	global_temperature = 0;
+	global_humidity = 0;
+
+	MODE = MANUAL;
+	// if these variables are not initialized just go in error mode in the future
+	if((pwm_value != 0) && (button != 0) && (global_temperature != 0) && (global_humidity != 0)) return E_NOT_OK;
+
+    memset(data_for_display, 0, sizeof(data_for_display));
+    memset(buffer, 0, sizeof(buffer));
+    memset(str, 0, sizeof(str));
+    memset(button_label, 0, sizeof(button_label));
+
+    return E_OK;
+
+}
+
+void App_Logic_UpdateState(Std_ReturnType status)
+{
+	MODE = status;
 }
 void App_Logic_MainLoop()
 {
 /* Future state machines or application logic */
 
 	//App_Logic_UpdateSensorValues();
-	App_Logic_UpdateState();
+
 
 	switch(MODE)
 		{
-	case MANUAL:
-	{
-		App_Logic_SetMotorPwm();
-//		lv_label_set_text(ui->screen_1_btn_1_label, "Manual");
-		//lv_label_set_text(guider_ui.screen_1_btn_1_label, "Manual");
 
-		strcpy(button_label, "MANUAL");
-		//PRINTF("%s",button_label);
-		break;
-	}
-	case AUTO:
-	{
-		App_Logic_SetMotorPwm_PI();
-//		lv_label_set_text(ui->screen_1_btn_1_label, "Auto");
-		//lv_label_set_text(guider_ui.screen_1_btn_1_label, "Auto");
-//		PRINTF("AUTO MODE\n");
-		strcpy(button_label, "AUTO");
-		///PRINTF("%s",button_label);
-		break;
-	}
-	case START:
-	{
-		//init everything
-		break;
-	}
+			case RESET:
+			{
 
-	case ERROR:
-	{
-		// if something doesn't work end up here
-		break;
-	}
-	default:
-	{
-		PRINTF("ERROR IN STATE MACHINE\n");
-	}
+				//Rte_Init();
+				Std_ReturnType status = App_Init_Variables();
+				if (status != E_NOT_OK)
+				App_Logic_UpdateState(ERROR);
+				else
+				App_Logic_UpdateState(MANUAL);
+
+
+			}
+			case MANUAL:
+			{
+				App_Logic_SetMotorPwm();
+		//		lv_label_set_text(ui->screen_1_btn_1_label, "Manual");
+				//lv_label_set_text(guider_ui.screen_1_btn_1_label, "Manual");
+
+				strcpy(button_label, "MANUAL");
+				App_Logic_UpdateState(button);
+				//PRINTF("%s",button_label);
+				break;
+			}
+			case AUTO:
+			{
+				App_Logic_SetMotorPwm_PI();
+		//		lv_label_set_text(ui->screen_1_btn_1_label, "Auto");
+				//lv_label_set_text(guider_ui.screen_1_btn_1_label, "Auto");
+		//		PRINTF("AUTO MODE\n");
+				strcpy(button_label, "AUTO");
+				App_Logic_UpdateState(button);
+				///PRINTF("%s",button_label);
+				break;
+			}
+
+			case ERROR:
+			{
+				// if something doesn't work end up here
+				// LOG ERROR
+				Std_ReturnType status = App_Init_Variables();
+				MODE = RESET;
+				break;
+			}
+			default:
+			{
+				PRINTF("ERROR IN STATE MACHINE\n");
+			}
 		}
 	//App_Logic_SetMotorPwm();
 	//App_Logic_SetMotorPwm_PI();
@@ -149,8 +181,8 @@ void App_Logic_PrepareUiData()
 
     /* Temperature + Humidity */
 	snprintf(data_for_display, sizeof(data_for_display),
-							 "T:%d H:%d", g_temp, g_hum);
-	//PRINTF("T:%d H:%d", g_temp, g_hum);
+							 "T:%d H:%d", global_temperature, global_humidity);
+	//PRINTF("T:%d H:%d", global_temperature, global_humidity);
 }
 
 /* Acquire sensor values via RTE */
@@ -177,8 +209,8 @@ void App_Logic_UpdateSensorValues(void)
     }
 
     /* Update global values */
-    g_temp = t;
-    g_hum  = h;
+    global_temperature = t;
+    global_humidity  = h;
 
 }
 
@@ -198,7 +230,7 @@ void App_Logic_SetMotorPwm_PI(void)
 {
 //	uint8_t desired_temp = 20;
 	uint8_t internal_temp = (uint8_t)pwm_value;
-	uint8_t pwm_internal = PI_Controller_Run(&g_temp, &internal_temp); // 100 duty_cycle and 10 max control value
+	uint8_t pwm_internal = PI_Controller_Run(&global_temperature, &internal_temp); // 100 duty_cycle and 10 max control value
 	Rte_Write_PwmDuty(pwm_internal);
 	PRINTF("PWM FROM PI: %d\n",pwm_internal);
 }

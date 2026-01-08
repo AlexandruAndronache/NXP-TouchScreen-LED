@@ -8,7 +8,8 @@
 
 // DC MOTOR FREQUENCY
 #define _20_000_Hz 20000U
-#define _50_DUTY_CYCLE 50U
+//#define _0_DUTY_CYCLE 0U
+
 
 //BaseType_t stat;
 //BaseType_t stat_pwm;

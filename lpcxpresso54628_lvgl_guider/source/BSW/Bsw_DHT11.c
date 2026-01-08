@@ -48,6 +48,12 @@ Std_ReturnType Bsw_DHT11_Init()
     	if(GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN) == LOW) check1 = TRUE;
     }
 
+    if(check1 != TRUE)
+    {
+    	// Print Error
+    	return E_NOT_OK;
+    }
+
     // 5. Next, check for 80us LOW followed by 80us HIGH from DHT11.
     // This condition denotes that DHT11 is ready to send data next.
     time2 = DEMO_GetUsTimer();
@@ -56,19 +62,31 @@ Std_ReturnType Bsw_DHT11_Init()
     	if(GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN) == LOW) check2 = TRUE; // 80 us LOW
     }
 
+    if(check2 != TRUE)
+    {
+    	// Print Error
+    	return E_NOT_OK;
+    }
+
     time3 = DEMO_GetUsTimer();
     //check3 = 0;
     while((DEMO_GetUsTimer() - time3) <= _80_us ){
     	if(GPIO_PinRead(GPIO, DHT_PORT, DHT_PIN)) check3 = TRUE; // 80 us HIGH
     }
 
+    if(check3 != TRUE)
+    {
+    	// Print Error
+    	return E_NOT_OK;
+    }
 
-    if((check1 && check2 && check3) == TRUE)
-	{
+
+//    if((check1 && check2 && check3) == TRUE)
+//	{
 	return E_OK;
-	}
-    else
-	return E_NOT_OK;
+//	}
+//    else
+//	return E_NOT_OK;
 }
 
 Std_ReturnType Bsw_DHT11_Read(DHT11_DataType_raw *data)

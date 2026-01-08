@@ -14,9 +14,6 @@
 /* Main APP task (if needed for periodic supervision) */
 void AppTask(void *pv)
 {
-
-
-	Rte_Init();
 	for(;;)
 	{
 		App_Logic_MainLoop();

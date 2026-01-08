@@ -27,7 +27,7 @@ static void screen_1_slider_1_event_handler (lv_event_t *e)
 
     	if (button != 0)
     	{
-    		lv_slider_set_range(slider, 0, 30);
+    		lv_slider_set_range(slider, 0, global_temperature);
     	}
     	else
     	{

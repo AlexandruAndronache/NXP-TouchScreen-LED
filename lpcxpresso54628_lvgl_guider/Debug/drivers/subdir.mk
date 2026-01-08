@@ -11,6 +11,7 @@ C_SRCS += \
 ../drivers/fsl_flexcomm.c \
 ../drivers/fsl_gpio.c \
 ../drivers/fsl_i2c.c \
+../drivers/fsl_iap.c \
 ../drivers/fsl_lcdc.c \
 ../drivers/fsl_power.c \
 ../drivers/fsl_reset.c \
@@ -26,6 +27,7 @@ C_DEPS += \
 ./drivers/fsl_flexcomm.d \
 ./drivers/fsl_gpio.d \
 ./drivers/fsl_i2c.d \
+./drivers/fsl_iap.d \
 ./drivers/fsl_lcdc.d \
 ./drivers/fsl_power.d \
 ./drivers/fsl_reset.d \
@@ -41,6 +43,7 @@ OBJS += \
 ./drivers/fsl_flexcomm.o \
 ./drivers/fsl_gpio.o \
 ./drivers/fsl_i2c.o \
+./drivers/fsl_iap.o \
 ./drivers/fsl_lcdc.o \
 ./drivers/fsl_power.o \
 ./drivers/fsl_reset.o \
@@ -61,7 +64,7 @@ drivers/%.o: ../drivers/%.c drivers/subdir.mk
 clean: clean-drivers
 
 clean-drivers:
-	-$(RM) ./drivers/fsl_clock.d ./drivers/fsl_clock.o ./drivers/fsl_common.d ./drivers/fsl_common.o ./drivers/fsl_common_arm.d ./drivers/fsl_common_arm.o ./drivers/fsl_emc.d ./drivers/fsl_emc.o ./drivers/fsl_flexcomm.d ./drivers/fsl_flexcomm.o ./drivers/fsl_gpio.d ./drivers/fsl_gpio.o ./drivers/fsl_i2c.d ./drivers/fsl_i2c.o ./drivers/fsl_lcdc.d ./drivers/fsl_lcdc.o ./drivers/fsl_power.d ./drivers/fsl_power.o ./drivers/fsl_reset.d ./drivers/fsl_reset.o ./drivers/fsl_sctimer.d ./drivers/fsl_sctimer.o ./drivers/fsl_spi.d ./drivers/fsl_spi.o ./drivers/fsl_usart.d ./drivers/fsl_usart.o
+	-$(RM) ./drivers/fsl_clock.d ./drivers/fsl_clock.o ./drivers/fsl_common.d ./drivers/fsl_common.o ./drivers/fsl_common_arm.d ./drivers/fsl_common_arm.o ./drivers/fsl_emc.d ./drivers/fsl_emc.o ./drivers/fsl_flexcomm.d ./drivers/fsl_flexcomm.o ./drivers/fsl_gpio.d ./drivers/fsl_gpio.o ./drivers/fsl_i2c.d ./drivers/fsl_i2c.o ./drivers/fsl_iap.d ./drivers/fsl_iap.o ./drivers/fsl_lcdc.d ./drivers/fsl_lcdc.o ./drivers/fsl_power.d ./drivers/fsl_power.o ./drivers/fsl_reset.d ./drivers/fsl_reset.o ./drivers/fsl_sctimer.d ./drivers/fsl_sctimer.o ./drivers/fsl_spi.d ./drivers/fsl_spi.o ./drivers/fsl_usart.d ./drivers/fsl_usart.o
 
 .PHONY: clean-drivers
 

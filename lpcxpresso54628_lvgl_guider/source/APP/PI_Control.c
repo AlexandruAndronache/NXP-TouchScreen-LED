@@ -18,7 +18,7 @@ uint8_t PI_Controller_Run(uint8_t *sensor_temperature, uint8_t *desired_temperat
 //    Rte_Read_Temperature_Value(&measured);
 //    Rte_Read_Temperature_Setpoint(&setpoint);
 
-    float placeholder_temp = 20.0;
+    //float placeholder_temp = 20.0;
 
     error = *desired_temperature - *sensor_temperature;
 
