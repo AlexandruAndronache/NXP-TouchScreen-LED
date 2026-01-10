@@ -37,7 +37,7 @@ extern "C" {
  **********************/
 
 typedef struct {
-    uint16_t i;
+    uint16_t error_counter;
     uint16_t f;
 } lv_sqrt_res_t;
 

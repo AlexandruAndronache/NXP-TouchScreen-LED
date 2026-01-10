@@ -6,13 +6,11 @@
  */
 #include "PI_Control.h"
 
-
-
 uint8_t PI_Controller_Run(uint8_t *sensor_temperature, uint8_t *desired_temperature)
 {
     //float measured = 0;
    // float setpoint = 0;
-    float error = 0;
+    float error = 0.0;
     uint8_t control = 0;
 
 //    Rte_Read_Temperature_Value(&measured);

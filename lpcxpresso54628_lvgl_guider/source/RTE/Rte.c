@@ -15,21 +15,20 @@ Std_ReturnType Rte_Init(void)
     if (Bsw_Pwm_Init(CHANNEL_0) != E_OK)
     {
     	// EM_ERROR_PWM_SETUP_FAILED
+    	log_error(EM_MODULE_PWM, EM_ERROR_PWM_SETUP_FAILED, "Rte_Init");
         rv = E_NOT_OK;
     }
 
-    /* Nothing else mandatory for DHT11 or display in our wrappers.
-       If you later add BSW init functions, call them here. */
 
     return rv;
 }
 
-/* Read both temperature and humidity in one call */
 Std_ReturnType Rte_Read_DHT11(uint8 *temperature, uint8 *humidity)
 {
     if ((temperature == NULL) || (humidity == NULL))
     {
     	// EM_ERROR_DHT11_READ_ERROR
+    	log_error(EM_MODULE_DHT11, EM_ERROR_DHT11_READ, "Rte_Read_DHT11");
     	return E_NOT_OK;
     }
 
@@ -44,12 +43,12 @@ Std_ReturnType Rte_Read_DHT11(uint8 *temperature, uint8 *humidity)
     else
     {
     	// EM_ERROR_DHT11_READ_TEMP
+    	log_error(EM_MODULE_DHT11, EM_ERROR_DHT11_READ, "Rte_Read_DHT11");
     	return E_NOT_OK;
     }
 
 }
 
-/* Convenience single-value readers */
 Std_ReturnType Rte_Read_Temperature(uint8 *temperature)
 {
     DHT11_DataType_raw d;
@@ -61,7 +60,8 @@ Std_ReturnType Rte_Read_Temperature(uint8 *temperature)
     else
     {
     	// EM_ERROR_DHT11_READ_TEMP
-    return E_NOT_OK;
+    	log_error(EM_MODULE_DHT11, EM_ERROR_DHT11_READ_TEMP, "Rte_Read_Temperature");
+    	return E_NOT_OK;
     }
 }
 
@@ -76,11 +76,11 @@ Std_ReturnType Rte_Read_Humidity(uint8 *humidity)
     else
     {
     	// EM_ERROR_DHT11_READ_HUM
-    return E_NOT_OK;
+    	log_error(EM_MODULE_DHT11, EM_ERROR_DHT11_READ_HUM, "Rte_Read_Humidity");
+    	return E_NOT_OK;
     }
 }
 
-/* PWM duty writer */
 Std_ReturnType Rte_Write_PwmDuty(uint8 dutyPercent)
 {
     /* Clamp duty to 0..100 */
@@ -92,19 +92,9 @@ Std_ReturnType Rte_Write_PwmDuty(uint8 dutyPercent)
     else
     {
     	// EM_ERROR_PWM_UPDATE_DUTY
+    	log_error(EM_MODULE_PWM, EM_ERROR_PWM_UPDATE_DUTY, "Rte_Write_PwmDuty");
     return E_NOT_OK;
     }
 }
 
-/* Display text writer */
-//Std_ReturnType Rte_Write_DisplayText(uint8 labelId, const char *text)
-//{
-//    if (text == NULL)
-//        return E_NOT_OK;
-//
-//    /* Forward to display BSW */
-//    if (Bsw_Display_SetText(labelId, text) == E_OK)
-//        return E_OK;
-//
-//    return E_NOT_OK;
-//}
+

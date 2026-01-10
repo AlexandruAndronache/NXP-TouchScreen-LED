@@ -218,7 +218,7 @@ void LV_ATTRIBUTE_FAST_MEM lv_sqrt(uint32_t x, lv_sqrt_res_t * q, uint32_t mask)
         mask = mask >> 1;
     } while(mask);
 
-    q->i = root >> 4;
+    q->error_counter = root >> 4;
     q->f = (root & 0xf) << 4;
 }
 

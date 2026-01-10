@@ -116,14 +116,14 @@ void App_Logic_MainLoop()
 
 	switch(MODE)
 		{
-
 			case RESET:
 			{
-
-				//Rte_Init();
 				Std_ReturnType status = App_Init_Variables();
 				if (status != E_NOT_OK)
+				{
 				App_Logic_UpdateState(ERROR);
+				log_error(EM_MODULE_CONTROL, EM_ERROR_INIT_SYSTEM_FAILED, "App_Logic_MainLoop");
+				}
 				else
 				App_Logic_UpdateState(MANUAL);
 
@@ -132,44 +132,30 @@ void App_Logic_MainLoop()
 			case MANUAL:
 			{
 				App_Logic_SetMotorPwm();
-		//		lv_label_set_text(ui->screen_1_btn_1_label, "Manual");
-				//lv_label_set_text(guider_ui.screen_1_btn_1_label, "Manual");
-
 				strcpy(button_label, "MANUAL");
 				App_Logic_UpdateState(button);
-				//PRINTF("%s",button_label);
 				break;
 			}
 			case AUTO:
 			{
 				App_Logic_SetMotorPwm_PI();
-		//		lv_label_set_text(ui->screen_1_btn_1_label, "Auto");
-				//lv_label_set_text(guider_ui.screen_1_btn_1_label, "Auto");
-		//		PRINTF("AUTO MODE\n");
 				strcpy(button_label, "AUTO");
 				App_Logic_UpdateState(button);
-				///PRINTF("%s",button_label);
 				break;
 			}
 
 			case ERROR:
 			{
-				// if something doesn't work end up here
-				// LOG ERROR
-				Std_ReturnType status = App_Init_Variables();
-				MODE = RESET;
+				App_Logic_UpdateState(RESET);
 				break;
 			}
 			default:
 			{
-				PRINTF("ERROR IN STATE MACHINE\n");
+				App_Logic_UpdateState(ERROR);
+				MODE = ERROR; //Hard error setter
+				PRINTF("ERROR IN STATE MACHINE\n"); //hard printf
 			}
 		}
-	//App_Logic_SetMotorPwm();
-	//App_Logic_SetMotorPwm_PI();
-	//App_Logic_PrepareUiData();
-//	LCD_Init();
-//	LCD_Display();
 }
 
 
@@ -196,7 +182,8 @@ void App_Logic_UpdateSensorValues(void)
     status = Bsw_DHT11_Init();
     if (status != E_OK)
     {
-        PRINTF("DHT11 initialization failed!\r\n");
+        //PRINTF("DHT11 initialization failed!\r\n");
+    	log_error(EM_MODULE_DHT11, EM_ERROR_DHT11_READ, "App_Logic_UpdateSensorValues");
         return;
     }
 
@@ -204,7 +191,8 @@ void App_Logic_UpdateSensorValues(void)
     status = Rte_Read_DHT11(&t, &h);
     if (status != E_OK)
     {
-        PRINTF("DHT11 read failed!\r\n");
+    	log_error(EM_MODULE_DHT11, EM_ERROR_DHT11_READ, "App_Logic_UpdateSensorValues");
+       // PRINTF("DHT11 read failed!\r\n");
         return;
     }
 
@@ -232,7 +220,7 @@ void App_Logic_SetMotorPwm_PI(void)
 	uint8_t internal_temp = (uint8_t)pwm_value;
 	uint8_t pwm_internal = PI_Controller_Run(&global_temperature, &internal_temp); // 100 duty_cycle and 10 max control value
 	Rte_Write_PwmDuty(pwm_internal);
-	PRINTF("PWM FROM PI: %d\n",pwm_internal);
+	//PRINTF("PWM FROM PI: %d\n",pwm_internal);
 }
 
 void ui_fast_update_button_mode(lv_timer_t *t)
