@@ -1,2 +1,2 @@
 # NXP-TouchScreen&LED
-tOUCHsCREEN & pwm duty change
+Interface between NXP's touchscreen and PWM Control
